@@ -1,7 +1,6 @@
-
-# coding: utf-8
-
-# In[ ]:
+# Made by Sangpil Kim
+# 2016 may
+#Scrap from www.Opensecrets.org
 
 import sys
 from selenium import webdriver
@@ -78,6 +77,7 @@ def iter_scrap(driver):
         print driver.current_url
         container.append(scrap(driver))
         endPage = updateDriver(driver,root)
+        print 'Is end page? %s' %endPage
     return container
 
 def flatten(xs):
