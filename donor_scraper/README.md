@@ -17,6 +17,8 @@ This scraper need firefox browser to execute.
 Need selenium.
 
 To install selenium with pip.
+To install lxml with pip.
 ```
 pip install selenium
+pip install lxml
 ```

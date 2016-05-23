@@ -1,8 +1,4 @@
 
-# coding: utf-8
-
-# In[ ]:
-
 import sys
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -18,7 +14,7 @@ def init_driver():
     driver = webdriver.Firefox()
     driver.wait = WebDriverWait(driver,1)
     return driver
-                                
+
 def lookup(driver, query):
     driver.get("http://www.opensecrets.org/indivs/")
     try:
@@ -33,7 +29,7 @@ def lookup(driver, query):
         _id.click()                     #Click saerch botton
     except TimeoutException:     #Error handling
         print("Box or Button not found in google.com")
-    
+
 def updateDriver(driver,root):
     isEnd = True
     for child in root:
@@ -43,10 +39,10 @@ def updateDriver(driver,root):
            text = child.text.strip()
            if text.strip() == "Next":
              isEnd = False
-             print url[0]
-             print child.text
+             print(url[0])
+             print(child.text)
              url = "http://www.opensecrets.org/indivs/"+url[0]
-             driver.get(url)  
+             driver.get(url)
     return isEnd
 
 def getXML(driver):
@@ -56,8 +52,8 @@ def getXML(driver):
         tree = etree.parse(StringIO(html), parser)
         root = tree.find("//*[@class='pageCtrl']")
     except NoSuchElementException:
-        #driver.quit()
-        print "Name not found"
+        driver.quit()
+        print("Name not found")
         sys.exit(0)
     return root
 
@@ -75,10 +71,10 @@ def iter_scrap(driver):
     endPage = False
     while not endPage:
         root = getXML(driver)
-        print driver.current_url
+        print( driver.current_url )
         container.append(scrap(driver))
         endPage = updateDriver(driver,root)
-        print 'Is end page? %s' %endPage
+        print( 'Is end page? %s' %endPage)
     return container
 
 def flatten(xs):
@@ -103,13 +99,13 @@ def save_file(name,data):
                 info[0] = info[0].replace('\n',' ')
             writer = csv.writer(output, lineterminator='\n')
             writer.writerows(infos)
-    print 'Saved as'+name
-    
+    print( 'Saved as'+name)
+
 if __name__ == "__main__":
     driver = init_driver()
     name = sys.argv[1]
     lookup(driver, name)
     data = iter_scrap(driver)
-    #driver.quit()
+    driver.quit()
     save_file(name,data)
 
