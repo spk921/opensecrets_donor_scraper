@@ -101,9 +101,17 @@ def save_file(name,data):
             writer.writerows(infos)
     print( 'Saved as'+name)
 
+def joinName(arg):
+    len_ = len(arg)
+    name =''
+    for i in range(1,len_):
+        name = name + arg[i]
+        name = name + ' '
+    return name
+
 if __name__ == "__main__":
     driver = init_driver()
-    name = sys.argv[1]
+    name = joinName(sys.argv)
     lookup(driver, name)
     data = iter_scrap(driver)
     driver.quit()
