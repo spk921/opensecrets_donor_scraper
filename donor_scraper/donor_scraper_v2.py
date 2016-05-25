@@ -123,7 +123,7 @@ def importCEO(exle, num):
     wb = openpyxl.load_workbook(exle)
     sheet_name = wb.get_sheet_names()
     sheet = wb.get_sheet_by_name(sheet_name[0])
-    n = num
+    n = int(num)
     con = []
     for i in range(1,n):
 	    cell = 'A'+str(i)
