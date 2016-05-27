@@ -135,7 +135,6 @@ def importCEO(exle, num):
 	tmp = co.split()
 	tmp2 = ''
 	for tm in tmp:
-            tm.replace(',','')
             tmp2 = tmp2 + tm
             tmp2 = tmp2 + ' '
 	con2.append(tmp2.strip())
