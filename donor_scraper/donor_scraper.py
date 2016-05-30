@@ -1,5 +1,4 @@
 
-import sys
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -7,6 +6,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from lxml import etree
 from StringIO import StringIO
 from selenium.common.exceptions import NoSuchElementException
+import openpyxl
+import argparse as arg
+import sys
 import csv
 import os
 
@@ -30,19 +32,28 @@ def lookup(driver, query):
     except TimeoutException:     #Error handling
         print("Box or Button not found in google.com")
 
-def updateDriver(driver,root):
+def updateDriver(driver,root, name):
     isEnd = True
-    for child in root:
-        url = child.xpath("@href")
-        if len(url) == 1:
-           isEnd = True
-           text = child.text.strip()
-           if text.strip() == "Next":
-             isEnd = False
-             print(url[0])
-             print(child.text)
-             url = "http://www.opensecrets.org/indivs/"+url[0]
-             driver.get(url)
+    try:
+        for child in root:
+            url = child.xpath("@href")
+            if len(url) == 1:
+               isEnd = True
+               text = child.text.strip()
+               if text.strip() == "Next":
+                 isEnd = False
+                 print(url[0])
+                 print(child.text)
+                 url = "http://www.opensecrets.org/indivs/"+url[0]
+                 try:
+                     driver.get(url)
+                 except:
+                     print '%s Not Found' %name
+                     driver.quit()
+    except:
+         print '%s Not Found' %name
+         isEnd = True
+
     return isEnd
 
 def getXML(driver):
@@ -66,14 +77,14 @@ def scrap(driver):
             data.append([td.text for td in tds])
     return data
 
-def iter_scrap(driver):
+def iter_scrap(driver,name):
     container = []
     endPage = False
     while not endPage:
         root = getXML(driver)
         print( driver.current_url )
         container.append(scrap(driver))
-        endPage = updateDriver(driver,root)
+        endPage = updateDriver(driver,root,name)
         print( 'Is end page? %s' %endPage)
     return container
 
@@ -87,12 +98,12 @@ def flatten(xs):
     return result
 
 def save_file(name,data):
+    name = name.replace(' ','_')
     save_root = "./save"
     if not os.path.exists(save_root):
         os.makedirs(save_root)
     name = name+".csv"
     csvfile = "./save/"+name
-
     with open(csvfile, "w") as output:
         for infos in data:
             for info in infos:
@@ -109,11 +120,42 @@ def joinName(arg):
         name = name + ' '
     return name
 
+def importCEO(exle, start_row, max_row, limit):
+    wb = openpyxl.load_workbook(exle)
+    sheet_name = wb.get_sheet_names()
+    sheet = wb.get_sheet_by_name(sheet_name[0])
+    con = []
+    for i in range(start_row,max_row):
+	    cell = 'A'+str(i)
+	    n = sheet[cell].value
+	    if n:
+		con.append(n)
+    con2 = []
+    for co in con:
+	tmp = co.split()
+	tmp2 = ''
+	for tm in tmp:
+	    if len(tm)>2 or not limit:
+		tmp2 = tmp2 + tm
+                tmp2 = tmp2 + ' '
+	con2.append(tmp2.strip())
+
+    return con2
+
 if __name__ == "__main__":
-    driver = init_driver()
-    name = joinName(sys.argv)
-    lookup(driver, name)
-    data = iter_scrap(driver)
-    driver.quit()
-    save_file(name,data)
+    parser = arg.ArgumentParser()
+    parser.add_argument('--limit', default = False, type = bool, help = 'Ignore len 2 string in excel file')
+    parser.add_argument('--max_row', default = 3000, type = int,help = 'Limit reding max row from excel sheet')
+    parser.add_argument('--start_row', default = 1, type = int, help = 'Start from which row in excel sheet')
+    parser.add_argument('--filename', default = '', type = str, help = 'Name of excel file to read')
+    args = parser.parse_args()
+    con = importCEO(args.filename,args.start_row,args.max_row,args.limit)
+    for co in con:
+	driver = init_driver()
+	name = co
+	lookup(driver, name)
+	data = iter_scrap(driver,name)
+	driver.quit()
+	save_file(name,data)
+
 
