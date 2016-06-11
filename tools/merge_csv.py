@@ -3,6 +3,7 @@
 
 import os
 import csv
+import argparse as arg
 
 def concatCSV(sourceCSV,dstCSV):
     f = open(sourceCSV)
@@ -13,8 +14,7 @@ def concatCSV(sourceCSV,dstCSV):
     f.close()
 
 def flattenCSV(sourceDir):
-    # set path of folder which has CSV files
-    sourceDir = 'donor_by_name'
+    # int for counting csv files
     counter = 0
     # Destination CSV file
     dstCSVname = sourceDir+'_concat.csv'
@@ -41,8 +41,8 @@ def flattenCSV(sourceDir):
 
 if __name__ == "__main__":
     parser = arg.ArgumentParser()
-    parser.add_argument('--dest', default = '', type = str, help = 'Name of folder with multiple csv files')
+    parser.add_argument('--foldername', default = '', type = str, help = 'Name of folder with multiple csv files')
     args = parser.parse_args()
-    flattenCSV(args.dest)
+    flattenCSV(args.foldername)
 
 
