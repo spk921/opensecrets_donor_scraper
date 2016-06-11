@@ -123,7 +123,7 @@ def joinName(arg):
     return name
 
 def importCEO(fileName):
-    with open(fileName, newline='') as csvfile:
+    with open(fileName) as csvfile:
         con = []
         spamreader = csv.reader(csvfile, delimiter='\n')
         for row in spamreader:
