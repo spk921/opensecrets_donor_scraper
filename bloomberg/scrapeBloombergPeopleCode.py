@@ -48,18 +48,44 @@ def checkExist(csvName):
 if __name__ == "__main__":
     # Page is range in 1 ~ 3361
     parser = arg.ArgumentParser()
-    parser.add_argument('--fileName', default = 'bloomBergPeople.csv', type = str, help = 'Name of folder with multiple csv files')
-    parser.add_argument('--start'   , default =  1, type = int, help = 'Name of folder with multiple csv files')
-    parser.add_argument('--end'     , default = 3361, type = int, help = 'Name of folder with multiple csv files')
+    parser.add_argument('--fileName', default = 'bloomBergPeople_', type = str, help = 'Name of base csv file')
+    parser.add_argument('--start'   , default =  1, type = int, help = 'Name of start page')
+    parser.add_argument('--end'     , default = 3361, type = int, help = 'Name of end page')
+    parser.add_argument('--pagesPerCsv' , default = 300, type = int, help = 'Name of pages per CSV file')
     args = parser.parse_args()
+
+    # Set up vals
     start    = args.start
     end      = args.end
     fileName = args.fileName
+    batch    = args.pagesPerCsv
     csvName  = os.path.join(os.getcwd(),fileName)
 
-    #Check csvName recursively and append "next"
-    csvName = checkExist(csvName)
-    saveInfo(csvName,start,end)
+    # Cal index
+    n = int(end/batch)
+    rest = end - (n * batch)
+
+    # main loop
+    for i in range(1,n):
+        sIdx = 1 + (i-1)*batch
+        eIdx = i * batch
+        csvName = csvName + str(i) +'.csv'
+        #Check csvName recursively and append "next"
+        csvName = checkExist(csvName)
+        #Get info and save as csv
+        saveInfo(csvName,sIdx,eIdx)
+        #Reset csvName
+        csvName = args.fileName
+        print('%d th csv done')
+
+    # Do rest pages
+    if rest != 0:
+        csvName = csvName + str(n+1) + '.csv'
+        saveInfo(csvName,1+eIdx,end)
+        print('Do reset')
+        print('Done')
+    else:
+        print('Done')
 
 
 
