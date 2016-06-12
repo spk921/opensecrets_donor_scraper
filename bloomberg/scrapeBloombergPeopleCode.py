@@ -76,7 +76,7 @@ if __name__ == "__main__":
         saveInfo(csvName,sIdx,eIdx)
         #Reset csvName
         csvName = args.fileName
-        print('%d th csv done')
+        print('%d th csv done' %(i))
 
     # Do rest pages
     if rest != 0:
