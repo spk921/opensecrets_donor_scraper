@@ -28,7 +28,7 @@ def getInfo(num):
 def saveInfo(csvName,start,end):
     counter = 0
     with open(csvName,'w',newline='') as dstCsv:
-        for i in range(start,end):
+        for i in range(start,end+1):
             count , con = getInfo(i)
             writer = csv.writer(dstCsv)
             writer.writerows(con)
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     rest = end - (n * batch)
 
     # main loop
-    for i in range(1,n):
+    for i in range(1,n+1):
         sIdx = 1 + (i-1)*batch
         eIdx = i * batch
         csvName = csvName + str(i) +'.csv'
