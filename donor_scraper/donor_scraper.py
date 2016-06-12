@@ -125,7 +125,7 @@ def importCEO(exle, start_row, max_row, limit):
     sheet_name = wb.get_sheet_names()
     sheet = wb.get_sheet_by_name(sheet_name[0])
     con = []
-    for i in range(start_row,max_row):
+    for i in range(start_row,max_row+1):
 	    cell = 'A'+str(i)
 	    n = sheet[cell].value
 	    if n:
