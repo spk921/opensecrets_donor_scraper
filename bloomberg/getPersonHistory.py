@@ -1,5 +1,5 @@
 #Made by Sangpil Kim
-#May 24 2016
+#June 2016
 
 from bs4 import BeautifulSoup as bs4
 import requests as re
