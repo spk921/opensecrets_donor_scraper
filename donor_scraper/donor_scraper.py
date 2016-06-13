@@ -1,5 +1,6 @@
 #Made by Sangpil Kim
 #May 2016
+#py 2_7
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By

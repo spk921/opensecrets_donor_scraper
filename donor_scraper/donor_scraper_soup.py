@@ -1,5 +1,6 @@
 #Made by Sangpil Kim
-#May 24 2016
+#May 2016
+#Py 2_7
 
 import sys
 from selenium import webdriver
