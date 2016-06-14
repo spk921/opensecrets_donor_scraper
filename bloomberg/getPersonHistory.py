@@ -43,7 +43,6 @@ def saveInfo(csvName,con):
 
 if __name__ == '__main__':
     for i in range(1,13):
-        print('%d th csv processing')
         srcFileName = 'bloomBergPeople_'+str(i)+'.csv'
         dstFileName = 'bloomBergPeople_'+str(i)+'.csv'
         readCsv = os.path.join('personCodeHref',srcFileName)
@@ -53,6 +52,7 @@ if __name__ == '__main__':
             os.mkdir('./dump')
             print('dumps created')
         writeCsv = os.path.join('dump',dstFileName)
+        print('%d th csv processing' %(i))
         if os.path.isfile(writeCsv):
             print('%d th fileExist' %(i))
         else:
