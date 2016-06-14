@@ -10,7 +10,6 @@ def getCareerHistory(url):
     req = re.get(url)
     soup = bs4(req.text, 'html.parser')
     careerHistory        = soup.findAll("div", { "class" : "markets_module bio_career" })
-    #req = re.get("http://www.bloomberg.com/profiles/people/18811315-marlon-l-sanchez")
     #corporateInformation = soup.findAll("div", { "class" : "markets_module corporate_info" })
     #memberShips           = soup.findAll("div", { "class" : "markets_module bio_membership" })
 
