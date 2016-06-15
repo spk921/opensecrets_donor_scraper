@@ -32,7 +32,7 @@ if __name__ == '__main__':
     else:
         os.mkdir('./dump')
         print('dumps created')
-    for i in range(1,13):
+    for i in range(4,13):
         srcFileName = 'bloomBergPeople_'+str(i)+'.csv'
         dstFileName = 'bloomBergPeople_'+str(i)+'.json'
         readCsv = os.path.join('personCodeHref',srcFileName)
@@ -49,13 +49,16 @@ if __name__ == '__main__':
             else:
                 conj = []
                 for i in range(0,MAX):
-                    print('%d th person iterating' %(i))
-                    dic = {}
-                    dic['NAME'] = names[i]
-                    careerHistory,  corporateInformation, memberShips = getCareerHistory(urls[i])
-                    dic['CH'] = careerHistory
-                    dic['CI'] = corporateInformation
-                    dic['MS'] = memberShips
-                    conj.append(dic)
+                    try:
+                        print('%d th person iterating' %(i))
+                        dic = {}
+                        dic['NAME'] = names[i]
+                        careerHistory,  corporateInformation, memberShips = getCareerHistory(urls[i])
+                        dic['CH'] = careerHistory
+                        dic['CI'] = corporateInformation
+                        dic['MS'] = memberShips
+                        conj.append(dic)
+                    except:
+                        print('Fail')
                 with open(dstJson, mode='w', encoding='utf-8') as f:
                     json.dump(conj,f)
