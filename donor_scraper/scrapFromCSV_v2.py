@@ -75,23 +75,29 @@ def getXML(driver):
     return root
 
 def scrap(driver):
-    driver.current_url  #Getting current url
-    data = []           #Container for table data
-    for tr in driver.find_elements_by_xpath('//table[@id="top"]//tr'): #loop table id top
-        tds = tr.find_elements_by_tag_name('td')
-        if tds:
-            data.append([td.text for td in tds])
+    try:
+        driver.current_url  #Getting current url
+        data = []           #Container for table data
+        for tr in driver.find_elements_by_xpath('//table[@id="top"]//tr'): #loop table id top
+            tds = tr.find_elements_by_tag_name('td')
+            if tds:
+                data.append([td.text for td in tds])
+    except:
+        print('Fail')
     return data
 
 def iter_scrap(driver,name):
     container = []
     endPage = False
     while not endPage:
-        root = getXML(driver)
-        print( driver.current_url )
-        container.append(scrap(driver))
-        endPage = updateDriver(driver,root,name)
-        print( 'Is end page? %s' %endPage)
+        try:
+            root = getXML(driver)
+            print( driver.current_url )
+            container.append(scrap(driver))
+            endPage = updateDriver(driver,root,name)
+            print( 'Is end page? %s' %endPage)
+        except:
+            print('Fail')
     return container
 
 def flatten(xs):
@@ -140,10 +146,13 @@ if __name__ == "__main__":
     args = parser.parse_args()
     con = importCEO(args.filename)
     for co in con:
-        driver = init_driver()
-        name = co
-        lookup(driver, name)
-        data = iter_scrap(driver,name)
-        driver.quit()
-        save_file(name,data)
+        try:
+            driver = init_driver()
+            name = co
+            lookup(driver, name)
+            data = iter_scrap(driver,name)
+            driver.quit()
+            save_file(name,data)
+        except:
+            print('fail')
 
