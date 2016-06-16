@@ -9,5 +9,5 @@ with open('./dump/bloomBergPeople_1.json') as data_file:
 #pprint(data)
 print(data[0]['NAME'])
 print(data[0]['CH'])
-print(data[0]['CI'])
-print(data[0]['MS'])
+#print(data[0]['CI'])
+#print(data[0]['MS'])

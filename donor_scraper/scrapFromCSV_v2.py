@@ -5,6 +5,7 @@
 import os
 import sys
 import csv
+import time
 import argparse as arg
 from lxml import etree
 from io import StringIO
@@ -146,13 +147,17 @@ if __name__ == "__main__":
     args = parser.parse_args()
     con = importCEO(args.filename)
     for co in con:
-        try:
-            driver = init_driver()
-            name = co
-            lookup(driver, name)
-            data = iter_scrap(driver,name)
-            driver.quit()
-            save_file(name,data)
+        try:         
+            now = time.time()
+            future = now + 10
+            while time.time() < future:
+                driver = init_driver()
+                name = co
+                lookup(driver, name)
+                data = iter_scrap(driver,name)
+                driver.quit()
+                save_file(name,data)
+            pass
         except:
             print('fail')
 
