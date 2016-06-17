@@ -1,4 +1,7 @@
 #!/usr/bin/python
+# Made by Sangpil Kim
+# June 2016
+
 import json
 from google import search
 import csv
@@ -36,15 +39,20 @@ def readCSV(fileName):
             companies.append(row['coname'])
     return names, companies
 
+# Read CSV file with colum name by DictReader
 tuples = readCSV('ceoname.csv')
+
 # Unpacking tuples
 names , _ = tuples
 print(names)
 conj = []
+
 #Scrap info
 for name in names:
     conj.append(scrapInfo(name))
     print(conj[len(conj)-1])
+
 #Dump as json
+dstJson = 'oldBloomberg.json'
 with open(dstJson, mode='w', encoding='utf-8') as f:
     json.dump(conj,f)
