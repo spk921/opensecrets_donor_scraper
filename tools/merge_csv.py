@@ -18,8 +18,11 @@ def flattenCSV(sourceDir):
     counter = 0
     # Destination CSV file
     dstCSVname = sourceDir+'_concat.csv'
+    #Get current path
     currentDir = os.getcwd()
+    #Join currentPath and destination csv filename
     dstCSVpath = os.path.join(currentDir,dstCSVname)
+    # if for check exist of destination csv file
     if not os.path.isfile(dstCSVpath):
         dstCSV=open(dstCSVname,"a")
         targetDir = os.path.join(os.getcwd(),sourceDir)

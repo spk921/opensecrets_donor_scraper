@@ -16,7 +16,7 @@ import csv
 import os
 
 def init_driver():
-    driver = webdriver.Firefox()
+    driver = webdriver.PhantomJS(()
     driver.wait = WebDriverWait(driver,1)
     return driver
 
